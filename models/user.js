@@ -34,14 +34,18 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			hooks: {
 				beforeCreate: (data) => {
-					let shasum = crypto.createHash("sha256");
-					shasum.update(data.password);
-					data.password = shasum.digest("hex");
+					if (!!data.password) {
+						let shasum = crypto.createHash("sha256");
+						shasum.update(data.password);
+						data.password = shasum.digest("hex");
+					}
 				},
 				beforeFind: (data) => {
-					let shasum = crypto.createHash("sha256");
-					shasum.update(data.where.password);
-					data.where.password = shasum.digest("hex");
+					if (!!data.where.password) {
+						let shasum = crypto.createHash("sha256");
+						shasum.update(data.where.password);
+						data.where.password = shasum.digest("hex");
+					}
 				},
 			},
 		},

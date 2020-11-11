@@ -28,26 +28,25 @@ module.exports = (sequelize, DataTypes) => {
 			isActive: DataTypes.BOOLEAN,
 		},
 		{
-			sequelize,
-			modelName: "user",
-		},
-		{
 			hooks: {
 				beforeCreate: (data) => {
+					console.log(data);
 					if (!!data.password) {
-						let shasum = crypto.createHash("sha256");
-						shasum.update(data.password);
-						data.password = shasum.digest("hex");
+						data.password = crypto
+							.createHmac("sha256", data.password + "yeogigosumanhiyo")
+							.digest("hex");
 					}
 				},
 				beforeFind: (data) => {
 					if (!!data.where.password) {
-						let shasum = crypto.createHash("sha256");
-						shasum.update(data.where.password);
-						data.where.password = shasum.digest("hex");
+						data.password = crypto
+							.createHmac("sha256", data.password + "yeogigosumanhiyo")
+							.digest("hex");
 					}
 				},
 			},
+			sequelize,
+			modelName: "user",
 		},
 	);
 	return user;

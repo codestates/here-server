@@ -39,8 +39,8 @@ module.exports = (sequelize, DataTypes) => {
 				},
 				beforeFind: (data) => {
 					if (!!data.where.password) {
-						data.password = crypto
-							.createHmac("sha256", data.password + "yeogigosumanhiyo")
+						data.where.password = crypto
+							.createHmac("sha256", data.where.password + "yeogigosumanhiyo")
 							.digest("hex");
 					}
 				},

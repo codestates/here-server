@@ -21,6 +21,7 @@ app.use(
 		origin: [
 			"http://ygm-here.s3-website.ap-northeast-2.amazonaws.com",
 			"http://18.223.115.35",
+			"http://localhost",
 		],
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true,

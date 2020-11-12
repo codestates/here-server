@@ -4,13 +4,13 @@ module.exports = {
 	// five1star task #11
 	signup: async (req, res) => {
 		console.log(req.body);
-		const { email, password, mobile, username } = req.body;
+		const { email, password, mobile, name } = req.body;
 		const [result, create] = await user.findOrCreate({
 			where: { email, password },
 			defaults: {
 				email,
 				password,
-				username,
+				name,
 				mobile,
 				isMatple: false,
 				isFirst: true,

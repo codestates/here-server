@@ -9,6 +9,7 @@ var usersRouter = require("./routes/users");
 
 const cors = require("cors");
 const session = require("express-session");
+const dotenv = require("dotenv");
 
 var app = express();
 
@@ -30,7 +31,7 @@ app.use(
 
 app.use(
 	session({
-		secret: "yeogigosumanhiyo",
+		secret: JWT_PUBLIC,
 		resave: false,
 		saveUninitialized: true,
 	}),

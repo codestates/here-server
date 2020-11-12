@@ -1,3 +1,4 @@
+const session = require("express-session");
 const { user } = require("../models");
 
 module.exports = {
@@ -17,7 +18,6 @@ module.exports = {
 				isActive: true,
 			},
 		});
-
 		if (!create) {
 			res.status(409).send("email exists").end();
 		} else {
@@ -26,17 +26,27 @@ module.exports = {
 	},
 
 	// QuePark task #12
+  // five1star modifying signin func according to tast#22
 	signin: async (req, res) => {
 		try {
 			const { email, password } = req.body;
 			const result = await user.findOne({ where: { email, password } });
+
 			if (!!result) {
-				if (!req.session.userid) {
-					req.session.userid = result.id;
-				}
-				res.status(200);
-				res.send(result);
-				res.end();
+					if (result.isActive) {
+						if (!req.session.userid) {
+							req.session.userid = result.id;
+						}
+					res
+					.status(200)
+					.send(result)
+					.end()
+					} else {
+						res
+						.status(409)
+						.send('탈퇴한 유저입니다')
+						.end();
+					}	 
 			} else {
 				res.status(302);
 				req.session.email = email;
@@ -51,9 +61,21 @@ module.exports = {
 		}
 	},
 
-	// five12star tast #13
+	// five1star tast #13
 	logout: (req, res) => {
-		req.session.userid ? req.session.destory((err) => console.log(err)) : null;
+		req.session.userid ? req.session.destory(err => console.log(err)) : null;
 		res.redirect("../../");
 	},
+
+  // five1star tast #22
+	withdrawal: async (req,res)=>{
+		const id = req.session.userid;
+		await user.update({isActive:false},{where:id})
+
+		req.session.destory(err=>console.log(err));
+		res.redirect("../../");
+	}
 };
+
+
+

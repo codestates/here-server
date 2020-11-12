@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon ./bin/www"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -22,6 +22,7 @@
   "devDependencies": {
     "eslint": "^7.13.0",
     "eslint-config-airbnb": "^18.2.1",
+    "nodemon": "^2.0.6",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0"
   }

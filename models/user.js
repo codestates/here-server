@@ -34,14 +34,17 @@ module.exports = (sequelize, DataTypes) => {
 					console.log(data);
 					if (!!data.password) {
 						data.password = crypto
-							.createHmac("sha256", data.password + JWT_PUBLIC)
+							.createHmac("sha256", data.password + process.env.JWT_PUBLIC)
 							.digest("hex");
 					}
 				},
 				beforeFind: (data) => {
 					if (!!data.where.password) {
 						data.where.password = crypto
-							.createHmac("sha256", data.where.password + JWT_PUBLIC)
+							.createHmac(
+								"sha256",
+								data.where.password + process.env.JWT_PUBLIC,
+							)
 							.digest("hex");
 					}
 				},

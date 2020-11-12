@@ -31,7 +31,7 @@ app.use(
 
 app.use(
 	session({
-		secret: JWT_PUBLIC,
+		secret: process.env.JWT_PUBLIC,
 		resave: false,
 		saveUninitialized: true,
 	}),

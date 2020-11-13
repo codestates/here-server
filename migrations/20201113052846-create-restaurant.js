@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('Restaurants', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,32 +11,29 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      email: {
-        type: Sequelize.STRING
-      },
-      password: {
-        type: Sequelize.STRING
-      },
-      mobile: {
+      callNum: {
         type: Sequelize.STRING
       },
       location: {
         type: Sequelize.STRING
       },
-      latitude: {
+      photoRef: {
         type: Sequelize.STRING
       },
-      longitude: {
+      priceLevel: {
+        type: Sequelize.INTEGER
+      },
+      rating: {
+        type: Sequelize.INTEGER
+      },
+      mainmenu: {
         type: Sequelize.STRING
       },
-      isMatple: {
-        type: Sequelize.BOOLEAN
+      visit: {
+        type: Sequelize.INTEGER
       },
-      isFirst: {
-        type: Sequelize.BOOLEAN
-      },
-      isActive: {
-        type: Sequelize.BOOLEAN
+      like: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -49,6 +46,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('Restaurants');
   }
 };

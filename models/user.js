@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
 			isActive: DataTypes.BOOLEAN,
 		},
 		{
+			sequelize,
+			modelName: "User",
+		},
+		{
 			hooks: {
 				beforeCreate: (data) => {
 					console.log(data);
@@ -49,10 +53,6 @@ module.exports = (sequelize, DataTypes) => {
 					}
 				},
 			},
-		},
-		{
-			sequelize,
-			modelName: "User",
 		},
 	);
 	return User;

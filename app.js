@@ -7,9 +7,11 @@ var logger = require("morgan");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 
+const restaurantRouter = require("./routes/restaurant");
+
 const cors = require("cors");
 const session = require("express-session");
-const dotenv = require("dotenv");
+require("dotenv").config();
 
 var app = express();
 
@@ -22,7 +24,6 @@ app.use(
 		origin: [
 			"http://ygm-here.s3-website.ap-northeast-2.amazonaws.com",
 			"http://18.223.115.35",
-			"http://localhost",
 		],
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true,
@@ -45,6 +46,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+
+// TODO: handle cors
+app.use(cors());
+app.use("/restaurant", restaurantRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

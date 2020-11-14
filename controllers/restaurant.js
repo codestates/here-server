@@ -33,10 +33,8 @@ module.exports = {
 			if(!req.session.userId){
 				res.status(201).send('먼저 로그인을 해주세요')
 			} else {
-					//remove:id로 받아  req.params로 전달하는게 나은지에 대해서
-					const { id } = req.body;
-					//여기서 isActive가 false로 바뀌지 않음
-					await Restaurant.update({isActive:false},{where:{id:Number(id)}})
+					const { id } =req.params
+					await Restaurant.update({isActive:false},{where:{id}})
   				let result = await Restaurant.findOne({where:{id}});
 					res.status(200).send(result);
 				}

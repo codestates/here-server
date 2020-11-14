@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     rating: DataTypes.INTEGER,
     mainmenu: DataTypes.STRING,
     visit: DataTypes.INTEGER,
-    like: DataTypes.INTEGER
+    like: DataTypes.INTEGER,
+    isActive: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Restaurant',

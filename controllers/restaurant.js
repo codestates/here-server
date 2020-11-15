@@ -1,4 +1,4 @@
-const { Restaurant } = require("../models");
+const { Restaurant,Matzip } = require("../models");
 const { getPlaceData } = require("../lib/utils");
 const { Op } = require("sequelize");
 require("dotenv").config();
@@ -44,5 +44,25 @@ module.exports = {
 			res.status(500).json({ message: "관리자에게 문의하세요" });
 			res.end();
 			}
+	},
+ 	//five1star #task41, make row at Matzip tables
+	like: async (req,res)=>{
+		try {
+			if(!req.session.userId){
+				res.status(201).send('먼저 로그인을 해주세요')
+			} else {
+					const userId = req.session.userid;
+					const restId = req.params.id;
+					await Matzip.create({like:true,userId,restId});
+					let result = Matzip.findOne({
+					attribute:[like],	
+					where:{userId,restId}})
+					res.status(200).send(result);
+				}
+		}	catch {
+			res.status(500).json({ message: "관리자에게 문의하세요" });
+			res.end();
+		// 	}
 	}
+}
 }

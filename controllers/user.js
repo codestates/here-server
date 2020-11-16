@@ -27,7 +27,7 @@ module.exports = {
 				if (!create) {
 					res.status(409).send("email exists").end();
 				} else {
-					delete result.password;
+					result.password = null;
 					res.status(201).send(result).end();
 				}
 			})
@@ -44,7 +44,7 @@ module.exports = {
 					if (!req.session.userid) {
 						req.session.userid = userInfo.id;
 					}
-					delete userInfo.password;
+					userInfo.password = null;
 					req.session.userInfo = { ...userInfo };
 					res.status(308).redirect("/");
 				} else {

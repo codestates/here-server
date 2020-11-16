@@ -3,14 +3,14 @@ const { User } = require("../models");
 const { getLatLng } = require("../lib/utils");
 
 module.exports = {
-	// Modify signup using getLatLng function from utils
+	// post function
 	signup: async (req, res) => {
 		console.log(req.body);
-		const { email, password, mobile, name, address } = req.body;
-		getLatLng(address)
+		const { email, password, mobile, name, location } = req.body;
+		getLatLng(location)
 			.then(async (promiseResult) => {
 				const { lat, lng } = promiseResult;
-				const location = `${address}@${lat},${lng}`;
+				const locationData = `${location}@${lat},${lng}`;
 				const [result, create] = await User.findOrCreate({
 					where: { email, password },
 					defaults: {
@@ -18,7 +18,7 @@ module.exports = {
 						password,
 						name,
 						mobile,
-						location,
+						location: locationData,
 						isMatple: false,
 						isFirst: true,
 						isActive: true,
@@ -27,12 +27,13 @@ module.exports = {
 				if (!create) {
 					res.status(409).send("email exists").end();
 				} else {
+					delete result.password;
 					res.status(201).send(result).end();
 				}
 			})
 			.catch((err) => console.log(err));
 	},
-
+	// post function
 	signin: async (req, res) => {
 		try {
 			const { email, password } = req.body;
@@ -43,7 +44,9 @@ module.exports = {
 					if (!req.session.userid) {
 						req.session.userid = userInfo.id;
 					}
-					res.status(200).send(userInfo).end();
+					delete userInfo.password;
+					req.session.userInfo = { ...userInfo };
+					res.status(308).redirect("/");
 				} else {
 					res.status(409).send("탈퇴한 유저입니다").end();
 				}
@@ -60,12 +63,12 @@ module.exports = {
 			res.end();
 		}
 	},
-
+	// post function
 	logout: (req, res) => {
 		req.session.userid ? req.session.destory((err) => console.log(err)) : null;
 		res.redirect("../../");
 	},
-
+	// not use function, post function
 	withdrawal: async (req, res) => {
 		const id = req.session.userid;
 		await User.update({ isActive: false }, { where: id });
@@ -73,12 +76,17 @@ module.exports = {
 		req.session.destory((err) => console.log(err));
 		res.redirect("../../");
 	},
-
-
-mypage: async (req,res)=>{
-	res.send('mypage')
-}, 
-fixinfo: async (req,res)=>{
-	res.send('mypage/fixinfo')
-}
+	// get function
+	mypage: async (req, res) => {
+		const id = req.session.userid;
+		const userInfo = await User.findOne({
+			where: { id },
+			attributes: { exclude: ["password"] },
+		});
+		res.status(200).send(userInfo).end();
+	},
+	// put function
+	fixinfo: async (req, res) => {
+		res.send("mypage/fixinfo");
+	},
 };

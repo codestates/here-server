@@ -6,6 +6,6 @@ const { get, post, put, remove } = require("../controllers/restaurant");
 router.get("/get", get);
 router.post("/post", post);
 router.put("/put", put);
-router.delete("/remove", remove);
+router.delete("/remove/:id", remove);
 
 module.exports = router;

@@ -19,16 +19,17 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-app.use(
-	cors({
-		origin: [
-			"http://ygm-here.s3-website.ap-northeast-2.amazonaws.com",
-			"http://18.223.115.35",
-		],
-		methods: ["GET", "POST", "PUT", "DELETE"],
-		credentials: true,
-	}),
-);
+// Must use this when it is production
+// app.use(
+// 	cors({
+// 		origin: [
+// 			"http://ygm-here.s3-website.ap-northeast-2.amazonaws.com",
+// 			"http://18.223.115.35",
+// 		],
+// 		methods: ["GET", "POST", "PUT", "DELETE"],
+// 		credentials: true,
+// 	}),
+// );
 
 app.use(
 	session({

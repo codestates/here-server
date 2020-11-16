@@ -73,4 +73,12 @@ module.exports = {
 		req.session.destory((err) => console.log(err));
 		res.redirect("../../");
 	},
+
+
+mypage: async (req,res)=>{
+	res.send('mypage')
+}, 
+fixinfo: async (req,res)=>{
+	res.send('mypage/fixinfo')
+}
 };

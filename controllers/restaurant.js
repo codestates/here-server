@@ -52,8 +52,7 @@ module.exports = {
 				res.status(201).send('먼저 로그인을 해주세요')
 			} else {
 					const { id } = req.body;
-					await Restaurant.update({isActive:false},{where:{id:Number(id)}})
-  				let result = await Restaurant.findOne({where:{id}});
+  				let result = await Restaurant.update({isActive:isActive},{where:{id:Number(id)}});
 					res.status(200).send(result);
 				}
 		}	catch {

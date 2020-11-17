@@ -47,10 +47,12 @@ module.exports = {
 			if (!!userInfo) {
 				if (userInfo.isActive) {
 					userInfo.password = null;
+					console.log("AAAAA");
 					res.cookie("userInfo", JSON.stringify(userInfo), {
-						sameSite: none,
+						sameSite: "none",
 						httpOnly: true,
 					});
+					console.log("BBBBB");
 					res.status(308).send().redirect("/");
 				} else {
 					res.status(409).send("탈퇴한 유저입니다").end();
@@ -58,7 +60,7 @@ module.exports = {
 			} else {
 				res.status(404);
 				res.cookie("userInfo", JSON.stringify({ email: email }), {
-					sameSite: none,
+					sameSite: "none",
 					httpOnlyu: true,
 				});
 				res.end();
@@ -99,7 +101,7 @@ module.exports = {
 				attributes: { exclude: ["password"] },
 			});
 			// console.log(restInfo);
-			// res.cookie("restInfo", JSON.stringify(restInfo), { sameSite: none, httpOnly: true });
+			// res.cookie("restInfo", JSON.stringify(restInfo), { sameSite: "none", httpOnly: true });
 			res.status(200).send(restInfo).end();
 		} catch {
 			res.status(500).json({ message: "관리자에게 문의하세요" });
@@ -162,7 +164,7 @@ module.exports = {
 				res.clearCookie("userInfo");
 				modifyUserInfo.password = null;
 				res.cookie("userInfo", JSON.stringify(modifyUserInfo), {
-					sameSite: none,
+					sameSite: "none",
 					httpOnly: true,
 				});
 				res.status(200).end();

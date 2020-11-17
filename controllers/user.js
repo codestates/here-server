@@ -1,5 +1,4 @@
-const session = require("express-session");
-const { User } = require("../models");
+const { User, Matzip } = require("../models");
 const { getLatLng } = require("../lib/utils");
 
 module.exports = {
@@ -28,7 +27,7 @@ module.exports = {
 					res.status(409).send("email exists").end();
 				} else {
 					result.password = null;
-					res.status(201).send(result).end();
+					res.status(201).end();
 				}
 			})
 			.catch((err) => console.log(err));
@@ -41,49 +40,61 @@ module.exports = {
 
 			if (!!userInfo) {
 				if (userInfo.isActive) {
-					if (!req.session.userid) {
-						req.session.userid = userInfo.id;
-					}
 					userInfo.password = null;
-					req.session.userInfo = { ...userInfo };
-					res.status(308).redirect("/");
+					res.cookie("userInfo", JSON.stringify(userInfo), { httpOnly: true });
+					res.status(308).send().redirect("/");
 				} else {
 					res.status(409).send("탈퇴한 유저입니다").end();
 				}
 			} else {
-				res.status(302);
-				req.session.email = email;
-				res.redirect("../signup");
+				res.status(404);
+				res.cookie("userInfo", JSON.stringify({ email: email }), {
+					httpOnlyu: true,
+				});
 				res.end();
 			}
 		} catch {
-			res
-				.status(err.status || 500)
-				.json({ message: err.message || "관리자에게 문의하세요" });
+			res.status(500).json({ message: "관리자에게 문의하세요" });
 			res.end();
 		}
 	},
 	// post function
 	logout: (req, res) => {
-		req.session.userid ? req.session.destory((err) => console.log(err)) : null;
+		res.clearCookie("userInfo");
+		req.session.destory((err) => console.log(err));
 		res.redirect("../../");
 	},
 	// not use function, post function
 	withdrawal: async (req, res) => {
-		const id = req.session.userid;
+		const userInfo = JSON.parse(req.cookies.userInfo);
+		const id = userInfo.id;
 		await User.update({ isActive: false }, { where: id });
-
+		res.clearCookie("userInfo");
 		req.session.destory((err) => console.log(err));
 		res.redirect("../../");
 	},
 	// get function
 	mypage: async (req, res) => {
-		const id = req.session.userid;
-		const userInfo = await User.findOne({
-			where: { id },
-			attributes: { exclude: ["password"] },
-		});
-		res.status(200).send(userInfo).end();
+		try {
+			const reqUserInfo = JSON.parse(req.cookies.userInfo);
+			const id = reqUserInfo.id;
+			const restInfo = await Matzip.findAll({
+				where: { userId: id },
+				include: [{ all: true }],
+				orders: [
+					["like", "DESC"],
+					["visit", "DESC"],
+				],
+				// limit: 100,
+				attributes: { exclude: ["password"] },
+			});
+			// console.log(restInfo);
+			// res.cookie("restInfo", JSON.stringify(restInfo), { httpOnly: true });
+			res.status(200).send(restInfo).end();
+		} catch {
+			res.status(500).json({ message: "관리자에게 문의하세요" });
+			res.end();
+		}
 	},
 	// put function
 	fixinfo: async (req, res) => {

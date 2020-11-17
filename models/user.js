@@ -1,6 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
-const crypto = require('crypto');
+const crypto = require("crypto");
 module.exports = (sequelize, DataTypes) => {
 	class User extends Model {
 		/**
@@ -33,27 +33,29 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: "User",
-		}	
+		},
 	),
-	User.beforeCreate((data) => {
-					console.log(data);
-					if (!!data.password) {
-						data.password = crypto
-							.createHmac("sha256", data.password + process.env.JWT_PUBLIC)
-							.digest("hex");
-					}
-				}),
-	User.beforeFind((data) => {
-					if (!!data.where.password) {
-						data.where.password = crypto
-							.createHmac(
-								"sha256",
-								data.where.password + process.env.JWT_PUBLIC,
-							)
-							.digest("hex");
-					}
-				}
-	)
-	 
-return User;
+		User.beforeCreate((data) => {
+			console.log(data);
+			if (!!data.password) {
+				data.password = crypto
+					.createHmac("sha256", data.password + process.env.JWT_PUBLIC)
+					.digest("hex");
+			}
+		}),
+		User.beforeFind((data) => {
+			if (!!data.where.password) {
+				data.where.password = crypto
+					.createHmac("sha256", data.where.password + process.env.JWT_PUBLIC)
+					.digest("hex");
+			}
+		}),
+		User.beforeUpdate((data) => {
+			if (!!data.password) {
+				data.password = crypto
+					.createHmac("sha256", data.password + process.env.JWT_PUBLIC)
+					.digest("hex");
+			}
+		});
+	return User;
 };

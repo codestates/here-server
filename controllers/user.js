@@ -1,11 +1,17 @@
+const session = require("express-session");
 const { User, Matzip } = require("../models");
-const { getLatLng } = require("../lib/utils");
+const { getLatLng, checkUser } = require("../lib/utils");
 
 module.exports = {
 	// post function
 	signup: async (req, res) => {
 		console.log(req.body);
-		const { email, password, mobile, name, location } = req.body;
+		let { email, password, mobile, name, location } = req.body;
+		if (!mobile || !name || !location) {
+			mobile = "010-0000-0000";
+			name = "두루미";
+			location = "서울특별시 용산구";
+		}
 		getLatLng(location)
 			.then(async (promiseResult) => {
 				const { lat, lng } = promiseResult;
@@ -61,7 +67,7 @@ module.exports = {
 	// post function
 	logout: (req, res) => {
 		res.clearCookie("userInfo");
-		req.session.destory((err) => console.log(err));
+		// req.session.destory((err) => console.log(err));
 		res.redirect("../../");
 	},
 	// not use function, post function
@@ -98,6 +104,67 @@ module.exports = {
 	},
 	// put function
 	fixinfo: async (req, res) => {
-		res.send("mypage/fixinfo");
+		try {
+			const reqUserInfo = JSON.parse(req.cookies.userInfo);
+			reqUserInfo.password = req.body.password;
+			console.log(reqUserInfo);
+			console.log(req.body);
+			if (checkUser(reqUserInfo)) {
+				const {
+					id,
+					email,
+					password,
+					location,
+					name,
+					nickname,
+					mobile,
+					imageRef,
+				} = reqUserInfo;
+				const {
+					inputEmail,
+					inputPassword,
+					inputLocation,
+					inputName,
+					inputNickname,
+					inputMobile,
+					inputImageRef,
+				} = req.body;
+				let newLocation;
+				// if (location.split("@")[0] !== inputLocation) {
+				// 	const getLocation = async (location) => {
+				// 		const [lat, lng] = await getLatLng(inputLocation);
+				// 		const result = `${location}@${lat},${lng}`;
+				// 		return result;
+				// 	};
+				// 	newLocation = getLocation(inputLocation);
+				// } else {
+				// 	newLocation = location;
+				// }
+				const modifyUserInfo = {
+					email: inputEmail || email,
+					password: inputPassword || password,
+					location: newLocation,
+					name: inputName || name,
+					nickname: inputNickname || nickname,
+					mobile: inputMobile || mobile,
+					imageRef: inputImageRef || imageRef,
+				};
+
+				await User.update(modifyUserInfo, {
+					individualHooks: true,
+					where: { id },
+				});
+
+				res.clearCookie("userInfo");
+				modifyUserInfo.password = null;
+				res.cookie("userInfo", JSON.stringify(modifyUserInfo), {
+					httpOnly: true,
+				});
+				res.status(200).end();
+			}
+		} catch {
+			res.status(500).json({ message: "관리자에게 문의하세요" });
+			res.end();
+		}
 	},
 };

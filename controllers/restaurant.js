@@ -1,6 +1,7 @@
-const { Restaurant,Matzip } = require("../models");
+const { Restaurant,Matzip,User } = require("../models");
 const { getPlaceData } = require("../lib/utils");
 const { Op } = require("sequelize");
+const { constants } = require("crypto");
 require("dotenv").config();
 
 module.exports = {
@@ -16,7 +17,6 @@ module.exports = {
 	// 		res.end();
 	// 	}
 	// },
-
 	getmatpleslike: async (req,res)=> {
 		try {
 			let result = await Restaurant.findAll({
@@ -36,35 +36,81 @@ module.exports = {
 	},
 
 	getaroundme: async (req,res)=>{
-		res.send('getaroundme')
-	},
-	getrestinfo: async (req,res)=>{
-		res.send('getrestinfo')
-	},
-
-
-  //for admin
-	post: async (req, res) => {
 		try {
-			getPlaceData(req.body, res);
+
+			const {id} =req.body
+			const { location } = await User.findOne({attributes:['location'],where:{id}})
+			
+			let adress;
+
+			!(location) ? adress = ['서울','영등포'] : adress = location.split(' ');
+	
+			if(adress[0]==='서울'){
+				const result = await Restaurant.findAll({
+					where:{	
+        		location:{[Op.like]:`대한민국 서울특별시 ${adress[1]}%`}
+					},
+					order: [['like','DESC']],
+					limit: 4,
+	 			})
+				res.status(201).send(result);
+			} else if (adress[0]==='경기'){
+					result = await Restaurant.findAll({
+						where:{	
+        			location:{[Op.like]:`대한민국 경기도 ${adress[1]}%`}
+						},
+						order: [['like','DESC']],
+						limit: 4,
+	 				})
+					res.status(201).send(result);
+				} else {
+						result = await Restaurant.findAll({
+						where:{	
+        			location:{[Op.like]:`대한민국 서울특별시 종로구%`}
+						},
+						order: [['like','DESC']],
+						limit: 4,
+	 				})
+						res.status(201).send(result);
+  				}
 		} catch {
 			res.status(500).json({ message: "관리자에게 문의하세요" });
 			res.end();
-		}
+			}
 	},
 
-	
+	getrestinfo: async (req,res)=>{
+		try {
+					const userId = req.session.userid;
+     			const { id } = req.params
+
+					let result = await Restaurant.findOne({where:{id}})
+					let temp = result.visit + 1
+					await Restaurant.update({visit:temp},{where:{id}}); 
+
+					let sendingData = await Restaurant.findOne({where:{id}})
+					let result2 = await Matzip.findOne({where:{userId,restId:id}})
+			
+					if(result2){
+						sendingData = { sendingData , iLike:true } 
+						res.status(201).send(sendingData);
+					} else {
+       			sendingData = { sendingData , iLike:false } 
+						res.status(201).send(sendingData);
+						}	
+		} catch {
+			res.status(500).json({ message: "관리자에게 문의하세요" });
+			res.end();
+			}
+	},
+
 	//five1star #task39, put func
 	put: async (req, res) => {
 		try {
-			if(!req.session.userId){
-				res.status(201).send('먼저 로그인을 해주세요')
-			} else {
 					const { id,mainmenu } = req.body;
 					await Restaurant.update({mainmenu},{where:{id:Number(id)}})
   				let result = await Restaurant.findOne({where:{id}});
 					res.status(200).send(result);
-			}
 		}	catch {
 			res.status(500).json({ message: "관리자에게 문의하세요" });
 			res.end();
@@ -74,37 +120,43 @@ module.exports = {
 	//five1star #task40, remove func. change 'isActive' to 'false'
 	remove: async (req, res) => {
 		try {
-			if(!req.session.userId){
-				res.status(201).send('먼저 로그인을 해주세요')
-			} else {
 					const { id } = req.body;
   				let result = await Restaurant.update({isActive:isActive},{where:{id:Number(id)}});
-					res.status(200).send(result);
-			}
+					res.status(20).send(result);
 		}	catch {
 			res.status(500).json({ message: "관리자에게 문의하세요" });
 			res.end();
 		}
 	},
 
-
  	//five1star #task41, make row at Matzip tables
 	like: async (req,res)=>{
 		try {
-			if(!req.session.userId){
-				res.status(201).send('먼저 로그인을 해주세요')
-			} else {
-					const userId = req.session.userid;
-					const restId = req.params.id;
-					await Matzip.create({like:true,userId,restId});
-					let result = Matzip.findOne({
-					attribute:[like],	
-					where:{userId,restId}})
-					res.status(200).send(result);
-			}
+          const userId = req.session.userid;
+					const id = req.body.id
+					await Matzip.create({like:true,userId,restId:id});
+					let result = await Restaurant.findOne({where:{id}})
+					let temp = result.like + 1
+					let isSuccess = Restaurant.update({like:temp},{where:{id}}); 
+				
+					if (isSuccess) {
+						res.status(201).send({iLike:true});
+					} else {
+							throw err;		
+						}
 		}	catch {
 			res.status(500).json({ message: "관리자에게 문의하세요" });
 			res.end();
 		}
-	}
+	},
+
+  //admin only method
+	post: async (req, res) => {
+		try {
+				getPlaceData(req.body, res);
+		} catch {
+			res.status(500).json({ message: "관리자에게 문의하세요" });
+			res.end();
+		}
+	},
 }

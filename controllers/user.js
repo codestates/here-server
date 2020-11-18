@@ -47,14 +47,8 @@ module.exports = {
 			if (!!userInfo) {
 				if (userInfo.isActive) {
 					userInfo.password = null;
-					console.log("AAAAA");
-					res.cookie("userInfo", JSON.stringify(userInfo), {
-						// sameSite: "none",
-						secure: true,
-						httpOnly: true,
-					});
-					console.log("BBBBB");
-					res.status(308).send().redirect("/");
+					res.send(userInfo);
+					res.status(308).send().end();
 				} else {
 					res.status(409).send("탈퇴한 유저입니다").end();
 				}

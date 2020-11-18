@@ -82,9 +82,18 @@ module.exports = {
 			console.log("BBBBBB");
 			console.log(" ---- session: ", req.session);
 			console.log(" ---- cookies: ", req.cookies);
-			req.session.destory();
+			res.clearCookie("userid");
+			req.session.destory((err) => {
+				if (err) console.log("EEEEEEE", err);
+				else {
+					console.log("FFFFFFF");
+					console.log(" ----destroy session: ", req.session);
+					req.end();
+					res.redirect("/signin");
+				}
+			});
 			console.log("CCCCCC");
-			res.status(201).send("Success").end;
+			res.status(201).send("Success").end();
 		} catch (err) {
 			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();

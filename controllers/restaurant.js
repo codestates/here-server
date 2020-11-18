@@ -19,18 +19,23 @@ module.exports = {
 	// },
 	matpleslike: async (req, res) => {
 		try {
-			let result = await Restaurant.findAll({
-				include: [
-					{
-						model: Matzip,
-						where: {
-							userId: 6,
+			const {id} = req.cookies.userInfo;
+			if ( id ) {
+				let result = await Restaurant.findAll({
+					include: [
+						{
+							model: Matzip,
+							where: {
+								userId: 6,
+							},
 						},
-					},
-				],
-				limit: 4,
-			});
-			res.status(201).send(result).end();
+					],
+					limit: 4,
+				});
+				res.status(201).send(result).end();
+			} else {
+				res.status(404).send("please login first").end();
+			}
 		} catch {
 			res.status(500).json({ message: "관리자에게 문의하세요" });
 			res.end();

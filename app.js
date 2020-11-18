@@ -19,6 +19,20 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
+// redirect HTTP to HTTPS
+app.all("*", (req, res, next) => {
+	let protocol = req.headers["x-forwarded-proto"] || req.protocol;
+	if (protocol == "https") {
+		next();
+	} else {
+		let from = `${protocol}://${req.hostname}${req.url}`;
+		let to = `https://${req.hostname}${req.url}`;
+		// log and redirect
+		console.log(`[${req.method}]: ${from} -> ${to}`);
+		res.redirect(to);
+	}
+});
+
 // Must use this when it is production
 app.use(
 	cors({
@@ -26,6 +40,8 @@ app.use(
 			"http://ygm-here.s3-website.ap-northeast-2.amazonaws.com",
 			"http://18.223.115.35",
 			"http://localhost",
+			"https://here.soltylink.com",
+			"http://soltylink.com",
 		],
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true,

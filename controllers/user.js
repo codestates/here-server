@@ -49,7 +49,7 @@ module.exports = {
 					userInfo.password = null;
 					console.log("AAAAA");
 					res.cookie("userInfo", JSON.stringify(userInfo), {
-						sameSite: "none",
+						// sameSite: "none",
 						httpOnly: true,
 					});
 					console.log("BBBBB");
@@ -60,7 +60,7 @@ module.exports = {
 			} else {
 				res.status(404);
 				res.cookie("userInfo", JSON.stringify({ email: email }), {
-					sameSite: "none",
+					// sameSite: "none",
 					httpOnlyu: true,
 				});
 				res.end();
@@ -164,7 +164,7 @@ module.exports = {
 				res.clearCookie("userInfo");
 				modifyUserInfo.password = null;
 				res.cookie("userInfo", JSON.stringify(modifyUserInfo), {
-					sameSite: "none",
+					// sameSite: "none",
 					httpOnly: true,
 				});
 				res.status(200).end();

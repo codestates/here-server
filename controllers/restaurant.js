@@ -1,7 +1,8 @@
 const { Restaurant, Matzip, User } = require("../models");
 const { getPlaceData } = require("../lib/utils");
-const { Op } = require("sequelize");
+const { Op, BOOLEAN } = require("sequelize");
 const { constants } = require("crypto");
+const { ne } = require("sequelize/types/lib/operators");
 require("dotenv").config();
 
 module.exports = {
@@ -39,6 +40,7 @@ module.exports = {
 
 	aroundme: async (err, req, res, next) => {
 		try {
+			console.log(BOOLEAN(err), BOOLEAN(req), BOOLEAN(res), BOOLEAN(next));
 			console.log(req.cookies);
 			const { id } = req.cookies.userInfo;
 			const { location } = await User.findOne({

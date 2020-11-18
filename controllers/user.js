@@ -87,15 +87,19 @@ module.exports = {
 	mypage: async (req, res) => {
 		try {
 			console.log(req.headers);
-			console.table(req.cookies);
+			console.log("cookies", req.cookies);
 			if (!req.cookies.userInfo) {
 				res.status(404).send("cookie is undefined").end();
 			}
 			const reqUserInfo = JSON.parse(req.cookies.userInfo);
 			const id = reqUserInfo.id;
 			const restInfo = await Matzip.findAll({
-				where: { userId: id, attributes: { exclude: ["password"] } },
+				where: { userId: id },
 				include: [
+					{
+						model: User,
+						attributes: { exclude: ["password"] },
+					},
 					{
 						model: Restaurant,
 					},

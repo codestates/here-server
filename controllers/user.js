@@ -79,7 +79,8 @@ module.exports = {
 		try {
 			res.clearCookie("userid");
 			req.session = null;
-			res.redirect(301, "https://here.soltylink.com").end();
+			console.log(req.headers);
+			res.redirect(301, req.headers.origin).end();
 		} catch (err) {
 			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();

@@ -49,7 +49,7 @@ module.exports = {
 					userInfo.password = null;
 					res.cookie("userInfo", JSON.stringify({ email: email }), {
 						// sameSite: "none",
-						domain: "here.soltylink.com",
+						domain: "soltylink.com",
 						secure: true,
 					});
 					res.status(200).send(userInfo).end();

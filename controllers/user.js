@@ -103,7 +103,7 @@ module.exports = {
 				// limit: 50,
 			});
 			restInfo.forEach((matzip) => {
-				matzip.User.password = null;
+				matzip.User = null;
 			});
 			// restInfo.User.password = null;
 			// console.log(restInfo);

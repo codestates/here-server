@@ -32,6 +32,7 @@ module.exports = {
 			});
 			res.status(201).send(result).end();
 		} catch (err) {
+			console.log(err);
 			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
@@ -78,6 +79,7 @@ module.exports = {
 				res.status(201).send(result).end();
 			}
 		} catch (err) {
+			console.log(err);
 			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
@@ -103,6 +105,7 @@ module.exports = {
 				res.status(201).send(sendingData).end();
 			}
 		} catch (err) {
+			console.log(err);
 			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
@@ -116,6 +119,7 @@ module.exports = {
 			let result = await Restaurant.findOne({ where: { id } });
 			res.status(200).send(result).end();
 		} catch (err) {
+			console.log(err);
 			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
@@ -131,6 +135,7 @@ module.exports = {
 			);
 			res.status(20).send(result).end();
 		} catch (err) {
+			console.log(err);
 			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
@@ -152,6 +157,7 @@ module.exports = {
 				throw err;
 			}
 		} catch (err) {
+			console.log(err);
 			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
@@ -162,6 +168,7 @@ module.exports = {
 		try {
 			getPlaceData(req.body, res);
 		} catch (err) {
+			console.log(err);
 			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}

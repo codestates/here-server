@@ -40,8 +40,8 @@ module.exports = {
 
 	aroundme: async (req, res) => {
 		try {
-			console.log(req.session);
-			const { id } = req.session.userid;
+			console.log(req.params);
+			const id = req.params.id;
 			const { location } = await User.findOne({
 				attributes: ["location"],
 				where: { id },

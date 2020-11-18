@@ -13,7 +13,7 @@ const {
 /* GET users listing. */
 
 router.get("/matpleslike", matpleslike);
-router.get("/aroundme", aroundme);
+router.get("/aroundme/:id", aroundme);
 router.get("/restinfo/:id", getrestinfo);
 
 router.post("/post", post);

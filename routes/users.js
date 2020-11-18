@@ -12,7 +12,7 @@ const {
 /* GET users listing. */
 router.post("/signup", signup);
 router.post("/signin", signin);
-router.get("/userInfo", userInfo);
+router.get("/userInfo/:id", userInfo);
 router.post("/logout", logout);
 router.get("/mypage", mypage);
 router.put("/mypage", fixinfo);

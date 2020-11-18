@@ -50,13 +50,18 @@ module.exports = {
 					res.cookie("userInfo", JSON.stringify({ email: email }), {
 						sameSite: "none",
 						domain: "here.soltylink.com",
-						httpOnly: true,
+						secure: true,
 					});
 					res.status(200).send(userInfo).end();
 				} else {
 					res.status(409).send("탈퇴한 유저입니다").end();
 				}
 			} else {
+				res.cookie("userInfo", JSON.stringify({ email: email }), {
+					sameSite: "none",
+					domain: "here.soltylink.com",
+					httpOnly: true,
+				});
 				res.status(404);
 				res.end();
 			}

@@ -46,8 +46,10 @@ module.exports = {
 
 			if (!!userInfo) {
 				if (userInfo.isActive) {
+					if (!req.session.userid) {
+						req.session.userid = userInfo.id;
+					}
 					userInfo.password = null;
-
 					res.status(201).send(userInfo).end();
 				} else {
 					res.status(409).send("탈퇴한 유저입니다").end();
@@ -70,9 +72,6 @@ module.exports = {
 			const { id } = req.params;
 			const userInfo = await User.findOne({ where: { id } });
 			if (!!userInfo) {
-				if (!req.session.userid) {
-					req.session.userid = userInfo.id;
-				}
 				res.cookie("userInfo", JSON.stringify(userInfo), {
 					domain: "soltylink.com",
 					secure: true,

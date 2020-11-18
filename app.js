@@ -32,7 +32,7 @@ app.use(
 		],
 		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 		credentials: true,
-		allowedHeaders: ["Origin, X-Requested With, Content-Type, Accept"],
+		allowedHeaders: ["Origin", "X-Requested With", "Content-Type", "Accept"],
 		maxAge: 3600,
 		preflightContinue: false,
 		optionsSuccessStatus: 204,

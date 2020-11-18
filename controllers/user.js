@@ -83,6 +83,7 @@ module.exports = {
 	// get function
 	mypage: async (req, res) => {
 		try {
+			console.log(req.headers);
 			console.table(req.cookies);
 			const reqUserInfo = JSON.parse(req.cookies.userInfo);
 			const id = reqUserInfo.id;

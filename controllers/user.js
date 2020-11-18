@@ -67,7 +67,7 @@ module.exports = {
 	},
 	userInfo: async (req, res) => {
 		try {
-			const { id } = req.body;
+			const { id } = req.params;
 			const userInfo = await User.findOne({ where: { id } });
 			if (!!userInfo) {
 				if (!req.session.userid) {

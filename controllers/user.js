@@ -50,6 +50,8 @@ module.exports = {
 					res.cookie("userInfo", JSON.stringify(userInfo), {
 						domain: "soltylink.com",
 						secure: true,
+						httpOnly: true,
+						path: "/",
 					});
 					res.status(200).send(userInfo).end();
 				} else {

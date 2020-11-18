@@ -48,7 +48,7 @@ module.exports = {
 				if (userInfo.isActive) {
 					userInfo.password = null;
 					res.cookie("userInfo", JSON.stringify({ email: email }), {
-						sameSite: "none",
+						// sameSite: "none",
 						domain: "here.soltylink.com",
 						secure: true,
 					});

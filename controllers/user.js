@@ -55,8 +55,8 @@ module.exports = {
 				res.status(404);
 				res.cookie("userInfo", JSON.stringify({ email: email }), {
 					// sameSite: "none",
-					domain: "here.soltylink.com",
-					httpOnlyu: true,
+					domain: "soltylink.com",
+					httpOnly: true,
 				});
 				res.end();
 			}

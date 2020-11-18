@@ -20,6 +20,7 @@ module.exports = {
 	matpleslike: async (req, res) => {
 		try {
 			const { id } = req.cookies.userInfo;
+			console.log("CCCCCC");
 			if (id) {
 				console.log("AAAAAAA");
 				let result = await Restaurant.findAll({

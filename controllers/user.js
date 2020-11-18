@@ -160,7 +160,7 @@ module.exports = {
 					individualHooks: true,
 					where: { id },
 				});
-
+				//
 				res.clearCookie("userInfo");
 				modifyUserInfo.password = null;
 				res.cookie("userInfo", JSON.stringify(modifyUserInfo), {

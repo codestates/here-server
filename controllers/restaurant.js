@@ -19,26 +19,18 @@ module.exports = {
 	// },
 	matpleslike: async (req, res) => {
 		try {
-			const { id } = req.cookies.userInfo;
-			console.log("CCCCCC");
-			if (id) {
-				console.log("AAAAAAA");
-				let result = await Restaurant.findAll({
-					include: [
-						{
-							model: Matzip,
-							where: {
-								userId: 6,
-							},
+			let result = await Restaurant.findAll({
+				include: [
+					{
+						model: Matzip,
+						where: {
+							userId: 6,
 						},
-					],
-					limit: 4,
-				});
-				console.log("BBBBBBB");
-				res.status(201).send(result).end();
-			} else {
-				res.status(404).send("please login first").end();
-			}
+					},
+				],
+				limit: 4,
+			});
+			res.status(201).send(result).end();
 		} catch {
 			res.status(500).json({ message: "관리자에게 문의하세요" });
 			res.end();
@@ -93,8 +85,7 @@ module.exports = {
 		try {
 			const userId = req.cookies.userInfo.id;
 			const { id } = req.params;
-
-			await User.update({ isFirst: false }, { where: { id: userId } });
+			await User.update({ isFirst: false }, { where: id: userId });
 			let result = await Restaurant.findOne({ where: { id } });
 			let temp = result.visit + 1;
 			await Restaurant.update({ visit: temp }, { where: { id } });

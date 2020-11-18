@@ -6,13 +6,11 @@ const {
 	logout,
 	mypage,
 	fixinfo,
-	userInfo,
 } = require("../controllers/user");
 
 /* GET users listing. */
 router.post("/signup", signup);
 router.post("/signin", signin);
-router.get("/userInfo/:id", userInfo);
 router.post("/logout", logout);
 router.get("/mypage", mypage);
 router.put("/mypage", fixinfo);

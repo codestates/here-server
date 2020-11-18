@@ -55,6 +55,7 @@ module.exports = {
 						secure: true,
 						httpOnly: true,
 						path: "/",
+						sameSite: "none",
 					});
 
 					res.status(200).send(userInfo).end();

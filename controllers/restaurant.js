@@ -37,9 +37,9 @@ module.exports = {
 		}
 	},
 
-	aroundme: async (req, res) => {
+	aroundme: async (err, req, res, next) => {
 		try {
-			console.table(req.cookies);
+			console.log(req.cookies);
 			const { id } = req.cookies.userInfo;
 			const { location } = await User.findOne({
 				attributes: ["location"],
@@ -77,7 +77,7 @@ module.exports = {
 				res.status(201).send(result).end();
 			}
 		} catch {
-			res.status(500).json({ message: "관리자에게 문의하세요" });
+			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
 	},

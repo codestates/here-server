@@ -17,7 +17,7 @@ module.exports = {
 	// 		res.end();
 	// 	}
 	// },
-	getmatpleslike: async (req, res) => {
+	matpleslike: async (req, res) => {
 		try {
 			let result = await Restaurant.findAll({
 				include: [
@@ -30,14 +30,14 @@ module.exports = {
 				],
 				limit: 4,
 			});
-			res.status(201).send(result);
+			res.status(201).send(result).end();
 		} catch {
 			res.status(500).json({ message: "관리자에게 문의하세요" });
 			res.end();
 		}
 	},
 
-	getaroundme: async (req, res) => {
+	aroundme: async (req, res) => {
 		try {
 			const { id } = req.cookies.userInfo;
 			const { location } = await User.findOne({
@@ -55,7 +55,7 @@ module.exports = {
 					order: [["like", "DESC"]],
 					limit: 4,
 				});
-				res.status(201).send(result);
+				res.status(201).send(result).end();
 			} else if (adress[0] === "경기") {
 				result = await Restaurant.findAll({
 					where: {
@@ -73,7 +73,7 @@ module.exports = {
 					order: [["like", "DESC"]],
 					limit: 4,
 				});
-				res.status(201).send(result);
+				res.status(201).send(result).end();
 			}
 		} catch {
 			res.status(500).json({ message: "관리자에게 문의하세요" });
@@ -95,10 +95,10 @@ module.exports = {
 
 			if (result2) {
 				sendingData = { sendingData, iLike: true };
-				res.status(201).send(sendingData);
+				res.status(201).send(sendingData).end();
 			} else {
 				sendingData = { sendingData, iLike: false };
-				res.status(201).send(sendingData);
+				res.status(201).send(sendingData).end();
 			}
 		} catch {
 			res.status(500).json({ message: "관리자에게 문의하세요" });
@@ -112,7 +112,7 @@ module.exports = {
 			const { id, mainmenu } = req.body;
 			await Restaurant.update({ mainmenu }, { where: { id: Number(id) } });
 			let result = await Restaurant.findOne({ where: { id } });
-			res.status(200).send(result);
+			res.status(200).send(result).end();
 		} catch {
 			res.status(500).json({ message: "관리자에게 문의하세요" });
 			res.end();
@@ -127,7 +127,7 @@ module.exports = {
 				{ isActive: isActive },
 				{ where: { id: Number(id) } },
 			);
-			res.status(20).send(result);
+			res.status(20).send(result).end();
 		} catch {
 			res.status(500).json({ message: "관리자에게 문의하세요" });
 			res.end();
@@ -145,7 +145,7 @@ module.exports = {
 			let isSuccess = Restaurant.update({ like: temp }, { where: { id } });
 
 			if (isSuccess) {
-				res.status(201).send({ iLike: true });
+				res.status(201).send({ iLike: true }).end();
 			} else {
 				throw err;
 			}

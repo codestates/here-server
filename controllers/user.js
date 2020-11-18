@@ -83,7 +83,7 @@ module.exports = {
 	// get function
 	mypage: async (req, res) => {
 		try {
-			console.log(req.cookies);
+			console.table(req.cookies);
 			const reqUserInfo = JSON.parse(req.cookies.userInfo);
 			const id = reqUserInfo.id;
 			const restInfo = await Matzip.findAll({

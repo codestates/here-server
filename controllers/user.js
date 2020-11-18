@@ -54,8 +54,8 @@ module.exports = {
 			} else {
 				res.status(404);
 				res.cookie("userInfo", JSON.stringify({ email: email }), {
-					// sameSite: "none",
-					domain: "soltylink.com",
+					sameSite: "none",
+					domain: "here.soltylink.com",
 					httpOnly: true,
 				});
 				res.end();
@@ -161,7 +161,7 @@ module.exports = {
 				res.clearCookie("userInfo");
 				modifyUserInfo.password = null;
 				res.cookie("userInfo", JSON.stringify(modifyUserInfo), {
-					// sameSite: "none",
+					sameSite: "none",
 					domain: "here.soltylink.com",
 					httpOnly: true,
 				});

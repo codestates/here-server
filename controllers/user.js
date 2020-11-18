@@ -50,12 +50,12 @@ module.exports = {
 					if (!req.session.userid) {
 						req.session.userid = userInfo.id;
 					}
-					// res.cookie("userInfo", JSON.stringify(userInfo), {
-					// 	domain: "soltylink.com",
-					// 	secure: true,
-					// 	httpOnly: true,
-					// 	path: "/",
-					// });
+					res.cookie("userid", JSON.stringify(userInfo.id), {
+						domain: "soltylink.com",
+						secure: true,
+						httpOnly: true,
+						path: "/",
+					});
 
 					res.status(200).send(userInfo).end();
 				} else {
@@ -83,15 +83,9 @@ module.exports = {
 			console.log(" ---- session: ", req.session);
 			console.log(" ---- cookies: ", req.cookies);
 			res.clearCookie("userid");
-			req.session.destory((err) => {
-				if (err) console.log("EEEEEEE", err);
-				else {
-					console.log("FFFFFFF");
-					console.log(" ----destroy session: ", req.session);
-					req.end();
-					res.redirect("/signin");
-				}
-			});
+			req.session = null;
+			console.log(req.session);
+			res.redirect("./signin");
 			console.log("CCCCCC");
 			res.status(201).send("Success").end();
 		} catch (err) {
@@ -144,11 +138,15 @@ module.exports = {
 	// put function
 	fixinfo: async (req, res) => {
 		try {
-			const reqUserInfo = JSON.parse(req.cookies.userInfo);
-			reqUserInfo.password = req.body.password;
+			const userid = req.session.userid;
+			const userInfo = await User.findOne({ where: { id: userid } });
+			userInfo.password = req.body.password;
+			// const reqUserInfo = JSON.parse(req.cookies.userInfo);
+			// reqUserInfo.password = req.body.password;
 			console.log(reqUserInfo);
 			console.log(req.body);
-			if (checkUser(reqUserInfo)) {
+			// if (checkUser(userInfo)) {
+			if (userInfo) {
 				const {
 					id,
 					email,
@@ -158,7 +156,7 @@ module.exports = {
 					nickname,
 					mobile,
 					imageRef,
-				} = reqUserInfo;
+				} = userInfo;
 				const {
 					inputEmail,
 					inputPassword,
@@ -169,16 +167,16 @@ module.exports = {
 					inputImageRef,
 				} = req.body;
 				let newLocation;
-				// if (location.split("@")[0] !== inputLocation) {
-				// 	const getLocation = async (location) => {
-				// 		const [lat, lng] = await getLatLng(inputLocation);
-				// 		const result = `${location}@${lat},${lng}`;
-				// 		return result;
-				// 	};
-				// 	newLocation = getLocation(inputLocation);
-				// } else {
-				// 	newLocation = location;
-				// }
+				if (location.split("@")[0] !== inputLocation) {
+					const getLocation = async (location) => {
+						const [lat, lng] = await getLatLng(inputLocation);
+						const result = `${location}@${lat},${lng}`;
+						return result;
+					};
+					newLocation = getLocation(inputLocation);
+				} else {
+					newLocation = location;
+				}
 				const modifyUserInfo = {
 					email: inputEmail || email,
 					password: inputPassword || password,
@@ -193,14 +191,14 @@ module.exports = {
 					individualHooks: true,
 					where: { id },
 				});
-				//
-				res.clearCookie("userInfo");
-				modifyUserInfo.password = null;
-				res.cookie("userInfo", JSON.stringify(modifyUserInfo), {
-					sameSite: "none",
-					domain: "here.soltylink.com",
-					httpOnly: true,
-				});
+
+				// res.clearCookie("userid");
+				// modifyUserInfo.password = null;
+				// res.cookie("userInfo", JSON.stringify(modifyUserInfo), {
+				// 	sameSite: "none",
+				// 	domain: "here.soltylink.com",
+				// 	httpOnly: true,
+				// });
 				res.status(200).end();
 			}
 		} catch (err) {

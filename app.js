@@ -51,7 +51,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
 // TODO: handle cors
-app.use(cors());
+// app.use(cors());
 app.use("/restaurant", restaurantRouter);
 
 // catch 404 and forward to error handler

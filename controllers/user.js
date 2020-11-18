@@ -100,9 +100,9 @@ module.exports = {
 					["like", "DESC"],
 					["visit", "DESC"],
 				],
-				limit: 50,
+				// limit: 50,
 			});
-			restInfo.User.password = null;
+			// restInfo.User.password = null;
 			console.log(restInfo);
 			// res.cookie("restInfo", JSON.stringify(restInfo), { sameSite: "none", httpOnly: true });
 			res.status(200).send(restInfo).end();

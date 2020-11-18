@@ -77,10 +77,10 @@ module.exports = {
 	// post function
 	logout: (req, res) => {
 		try {
-			const url = "https://here.soltylink.com/";
 			res.clearCookie("userid");
 			req.session = null;
-			res.status(201).send(url).end();
+			console.log(req.baseUrl);
+			res.redirect(301, req.baseUrl).end();
 		} catch (err) {
 			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
@@ -88,9 +88,9 @@ module.exports = {
 	},
 	// not use function, post function
 	withdrawal: async (req, res) => {
+		const url = "https://here.soltylink.com/";
 		const { userid } = JSON.parse(req.cookies);
 		await User.update({ isActive: false }, { where: userid });
-		const url = "https://here.soltylink.com/";
 		res.clearCookie("userid");
 		req.session = null;
 		res.status(201).send(url).end();

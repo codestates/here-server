@@ -50,19 +50,19 @@ module.exports = {
 					if (!req.session.userid) {
 						req.session.userid = userInfo.id;
 					}
-					res.cookie("userInfo", JSON.stringify(userInfo), {
-						domain: "soltylink.com",
-						secure: true,
-						httpOnly: true,
-						path: "/",
-					});
+					// res.cookie("userInfo", JSON.stringify(userInfo), {
+					// 	domain: "soltylink.com",
+					// 	secure: true,
+					// 	httpOnly: true,
+					// 	path: "/",
+					// });
 
 					res.status(200).send(userInfo).end();
 				} else {
 					res.status(409).send("탈퇴한 유저입니다").end();
 				}
 			} else {
-				res.cookie("userInfo", JSON.stringify({ email: email }), {
+				res.cookie("email", JSON.stringify({ email: email }), {
 					domain: "soltylink.com",
 					httpOnly: true,
 				});
@@ -77,8 +77,8 @@ module.exports = {
 	// post function
 	logout: (req, res) => {
 		try {
-			console.log("AAAAAA");
-			res.clearCookie("userInfo");
+			// console.log("AAAAAA");
+			// res.clearCookie("userInfo");
 			console.log("BBBBBB");
 			console.log(" ---- session: ", req.session);
 			console.log(" ---- cookies: ", req.cookies);
@@ -96,19 +96,21 @@ module.exports = {
 		const id = userInfo.id;
 		await User.update({ isActive: false }, { where: id });
 		res.clearCookie("userInfo");
-		req.session.destory((err) => console.log(err));
+		req.session.destory();
 		res.redirect("../../");
 	},
 	// get function
 	mypage: async (req, res) => {
 		try {
-			console.log(req.headers);
-			console.log("cookies", req.cookies);
-			if (!req.cookies.userInfo) {
-				res.status(404).send("cookie is undefined").end();
-			}
-			const reqUserInfo = JSON.parse(req.cookies.userInfo);
-			const id = reqUserInfo.id;
+			// console.log(req.headers);
+			// console.log("cookies", req.cookies);
+			// if (!req.cookies.userInfo) {
+			// 	res.status(404).send("cookie is undefined").end();
+			// }
+			console.log(req.session);
+			// const reqUserInfo = JSON.parse(req.cookies.userInfo);
+			// const id = reqUserInfo.id;
+			const id = req.session.userid;
 			const restInfo = await Matzip.findAll({
 				where: { userId: id },
 				include: [{ all: true }],

@@ -94,7 +94,7 @@ module.exports = {
 			const reqUserInfo = JSON.parse(req.cookies.userInfo);
 			const id = reqUserInfo.id;
 			const restInfo = await Matzip.findAll({
-				where: { userId: id },
+				where: { userId: id, attributes: { exclude: ["password"] } },
 				include: [
 					{
 						model: Restaurant,

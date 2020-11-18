@@ -48,7 +48,6 @@ module.exports = {
 				if (userInfo.isActive) {
 					userInfo.password = null;
 					res.cookie("userInfo", JSON.stringify(userInfo), {
-						// sameSite: "none",
 						domain: "soltylink.com",
 						secure: true,
 					});
@@ -72,7 +71,7 @@ module.exports = {
 	// post function
 	logout: (req, res) => {
 		res.clearCookie("userInfo");
-		// req.session.destory((err) => console.log(err));
+		req.session.destory((err) => console.log(err));
 		res.redirect("../../");
 	},
 	// not use function, post function
@@ -89,6 +88,9 @@ module.exports = {
 		try {
 			console.log(req.headers);
 			console.table(req.cookies);
+			if (!req.cookies.userInfo) {
+				res.status(404).send("cookie is undefined").end();
+			}
 			const reqUserInfo = JSON.parse(req.cookies.userInfo);
 			const id = reqUserInfo.id;
 			const restInfo = await Matzip.findAll({

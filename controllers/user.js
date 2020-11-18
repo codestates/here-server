@@ -50,7 +50,7 @@ module.exports = {
 					console.log("AAAAA");
 					res.cookie("userInfo", JSON.stringify(userInfo), {
 						// sameSite: "none",
-						domain: ".soltylink.com",
+						domain: "here.soltylink.com",
 						httpOnly: true,
 					});
 					console.log("BBBBB");
@@ -62,7 +62,7 @@ module.exports = {
 				res.status(404);
 				res.cookie("userInfo", JSON.stringify({ email: email }), {
 					// sameSite: "none",
-					domain: ".soltylink.com",
+					domain: "here.soltylink.com",
 					httpOnlyu: true,
 				});
 				res.end();
@@ -167,7 +167,7 @@ module.exports = {
 				modifyUserInfo.password = null;
 				res.cookie("userInfo", JSON.stringify(modifyUserInfo), {
 					// sameSite: "none",
-					domain: ".soltylink.com",
+					domain: "here.soltylink.com",
 					httpOnly: true,
 				});
 				res.status(200).end();

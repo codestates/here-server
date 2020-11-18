@@ -49,7 +49,7 @@ module.exports = {
 					userInfo.password = null;
 					console.log("AAAAA");
 					res.cookie("userInfo", JSON.stringify(userInfo), {
-						sameSite: "none",
+						// sameSite: "none",
 						secure: true,
 						httpOnly: true,
 					});

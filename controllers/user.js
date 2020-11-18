@@ -47,8 +47,7 @@ module.exports = {
 			if (!!userInfo) {
 				if (userInfo.isActive) {
 					userInfo.password = null;
-					res.send(userInfo);
-					res.status(308).send().end();
+					res.status(200).send(userInfo).end();
 				} else {
 					res.status(409).send("탈퇴한 유저입니다").end();
 				}

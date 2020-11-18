@@ -41,7 +41,7 @@ module.exports = {
 	aroundme: async (req, res) => {
 		try {
 			console.log(req.headers);
-			console.log(req.cookies[0]);
+			console.log(req.cookies);
 			const { id } = req.cookies.userInfo;
 			const { location } = await User.findOne({
 				attributes: ["location"],
@@ -87,7 +87,7 @@ module.exports = {
 
 	getrestinfo: async (req, res) => {
 		try {
-			const userId = req.cookies.userInfo.id;
+			const userId = req.session.userid;
 			const { id } = req.params;
 
 			let result = await Restaurant.findOne({ where: { id } });

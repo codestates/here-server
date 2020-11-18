@@ -19,20 +19,6 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-// redirect HTTP to HTTPS
-app.all("*", (req, res, next) => {
-	let protocol = req.headers["x-forwarded-proto"] || req.protocol;
-	if (protocol == "http") {
-		next();
-	} else {
-		let from = `${protocol}://${req.hostname}${req.url}`;
-		let to = `http://${req.hostname}${req.url}`;
-		// log and redirect
-		console.log(`[${req.method}]: ${from} -> ${to}`);
-		res.redirect(to);
-	}
-});
-
 // Must use this when it is production
 app.use(
 	cors({

@@ -20,24 +20,18 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
 // Must use this when it is production
-app.use(cors());
-app.all("/*", function (req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "X-Requested-With");
-	next();
-});
-// app.use(
-// 	cors({
-// 		origin: [
-// 			"http://ygm-here.s3-website.ap-northeast-2.amazonaws.com",
-// 			"http://localhost",
-// 			"https://here.soltylink.com",
-// 			"https://soltylink.com",
-// 		],
-// 		methods: ["GET", "POST", "PUT", "DELETE"],
-// 		credentials: true,
-// 	}),
-// );
+app.use(
+	cors({
+		origin: [
+			"http://ygm-here.s3-website.ap-northeast-2.amazonaws.com",
+			"http://localhost",
+			"https://here.soltylink.com",
+			"https://soltylink.com",
+		],
+		methods: ["GET", "POST", "PUT", "DELETE"],
+		credentials: true,
+	}),
+);
 
 app.use(
 	session({

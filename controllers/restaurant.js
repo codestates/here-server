@@ -39,7 +39,7 @@ module.exports = {
 
 	aroundme: async (req, res) => {
 		try {
-			console.log(req.cookies);
+			console.table(req.cookies);
 			const { id } = req.cookies.userInfo;
 			const { location } = await User.findOne({
 				attributes: ["location"],

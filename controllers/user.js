@@ -47,17 +47,17 @@ module.exports = {
 			if (!!userInfo) {
 				if (userInfo.isActive) {
 					userInfo.password = null;
+					res.cookie("userInfo", JSON.stringify({ email: email }), {
+						sameSite: "none",
+						domain: "here.soltylink.com",
+						httpOnly: true,
+					});
 					res.status(200).send(userInfo).end();
 				} else {
 					res.status(409).send("탈퇴한 유저입니다").end();
 				}
 			} else {
 				res.status(404);
-				res.cookie("userInfo", JSON.stringify({ email: email }), {
-					sameSite: "none",
-					domain: "here.soltylink.com",
-					httpOnly: true,
-				});
 				res.end();
 			}
 		} catch {

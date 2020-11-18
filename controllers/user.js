@@ -47,12 +47,16 @@ module.exports = {
 			if (!!userInfo) {
 				if (userInfo.isActive) {
 					userInfo.password = null;
+					if (!req.session.userid) {
+						req.session.userid = userInfo.id;
+					}
 					res.cookie("userInfo", JSON.stringify(userInfo), {
 						domain: "soltylink.com",
 						secure: true,
 						httpOnly: true,
 						path: "/",
 					});
+
 					res.status(200).send(userInfo).end();
 				} else {
 					res.status(409).send("탈퇴한 유저입니다").end();

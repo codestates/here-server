@@ -85,7 +85,7 @@ module.exports = {
 		try {
 			const userId = req.cookies.userInfo.id;
 			const { id } = req.params;
-			await User.update({ isFirst: false }, { where: id: userId });
+
 			let result = await Restaurant.findOne({ where: { id } });
 			let temp = result.visit + 1;
 			await Restaurant.update({ visit: temp }, { where: { id } });

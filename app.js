@@ -23,18 +23,13 @@ app.set("view engine", "pug");
 app.use(
 	cors({
 		origin: [
-			"http://ygm-here.s3-website.ap-northeast-2.amazonaws.com",
 			"http://localhost",
-			"https://here.soltylink.com/*",
 			"https://here.soltylink.com",
-			"https://soltylink.com/users/logout",
 			"https://soltylink.com",
 		],
 		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 		credentials: true,
-		allowedHeaders: ["Origin, X-Requested With, Content-Type, Accept"],
 		maxAge: 3600,
-		preflightContinue: false,
 		optionsSuccessStatus: 204,
 	}),
 );
@@ -57,7 +52,6 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
 // TODO: handle cors
-// app.use(cors());
 app.use("/restaurant", restaurantRouter);
 
 // catch 404 and forward to error handler

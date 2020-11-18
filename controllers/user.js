@@ -95,24 +95,15 @@ module.exports = {
 			const id = reqUserInfo.id;
 			const restInfo = await Matzip.findAll({
 				where: { userId: id },
-				include: [
-					{
-						model: User,
-						attributes: { exclude: ["password"] },
-					},
-					{
-						model: Restaurant,
-					},
-				],
 				include: [{ all: true }],
 				orders: [
 					["like", "DESC"],
 					["visit", "DESC"],
 				],
-				// limit: 100,
-				attributes: { exclude: ["password"] },
+				limit: 50,
 			});
-			// console.log(restInfo);
+			restInfo.password = null;
+			console.log(restInfo);
 			// res.cookie("restInfo", JSON.stringify(restInfo), { sameSite: "none", httpOnly: true });
 			res.status(200).send(restInfo).end();
 		} catch {

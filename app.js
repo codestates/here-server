@@ -20,14 +20,21 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
 // Must use this when it is production
+app.use(function (req, res, next) {
+	var xForwarded = req.get("X-Forwarded-Proto");
+	if (xForwarded !== "https") {
+		res.redirect("https://" + req.get("Host") + req.url);
+	}
+	next();
+});
+
 app.use(
 	cors({
 		origin: [
 			"http://ygm-here.s3-website.ap-northeast-2.amazonaws.com",
-			"http://18.223.115.35",
 			"http://localhost",
 			"https://here.soltylink.com",
-			"http://soltylink.com",
+			"https://soltylink.com",
 		],
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true,

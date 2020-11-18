@@ -22,11 +22,11 @@ app.set("view engine", "pug");
 // redirect HTTP to HTTPS
 app.all("*", (req, res, next) => {
 	let protocol = req.headers["x-forwarded-proto"] || req.protocol;
-	if (protocol == "https") {
+	if (protocol == "http") {
 		next();
 	} else {
 		let from = `${protocol}://${req.hostname}${req.url}`;
-		let to = `https://${req.hostname}${req.url}`;
+		let to = `http://${req.hostname}${req.url}`;
 		// log and redirect
 		console.log(`[${req.method}]: ${from} -> ${to}`);
 		res.redirect(to);

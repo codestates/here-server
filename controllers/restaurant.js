@@ -1,6 +1,6 @@
 const { Restaurant, Matzip, User } = require("../models");
 const { getPlaceData } = require("../lib/utils");
-const { Op, BOOLEAN } = require("sequelize");
+const { Op } = require("sequelize");
 const { constants } = require("crypto");
 const { ne } = require("sequelize/types/lib/operators");
 require("dotenv").config();

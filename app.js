@@ -23,10 +23,10 @@ app.set("view engine", "pug");
 app.use(
 	cors({
 		origin: [
-			"http://ygm-here.s3-website.ap-northeast-2.amazonaws.com",
-			"http://localhost",
-			"https://here.soltylink.com",
-			"https://soltylink.com",
+			"http://ygm-here.s3-website.ap-northeast-2.amazonaws.com/",
+			"http://localhost/",
+			"https://here.soltylink.com/",
+			"https://soltylink.com/",
 		],
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true,

@@ -12,8 +12,8 @@ module.exports = {
 	// 		where:{id:{[Op.lt]:10}}
 	// 		})
 	// 		res.status(200).send(result).end();
-	// 	} catch {
-	// 		res.status(500).json({ message: "관리자에게 문의하세요" });
+	// 	} catch (err) {
+	// 		res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 	// 		res.end();
 	// 	}
 	// },
@@ -31,13 +31,13 @@ module.exports = {
 				limit: 4,
 			});
 			res.status(201).send(result).end();
-		} catch {
-			res.status(500).json({ message: "관리자에게 문의하세요" });
+		} catch (err) {
+			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
 	},
 
-	aroundme: async (err, req, res, next) => {
+	aroundme: async (req, res) => {
 		try {
 			console.log(BOOLEAN(err), BOOLEAN(req), BOOLEAN(res), BOOLEAN(next));
 			console.log(req.cookies);
@@ -77,7 +77,7 @@ module.exports = {
 				});
 				res.status(201).send(result).end();
 			}
-		} catch {
+		} catch (err) {
 			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
@@ -102,8 +102,8 @@ module.exports = {
 				sendingData = { sendingData, iLike: false };
 				res.status(201).send(sendingData).end();
 			}
-		} catch {
-			res.status(500).json({ message: "관리자에게 문의하세요" });
+		} catch (err) {
+			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
 	},
@@ -115,8 +115,8 @@ module.exports = {
 			await Restaurant.update({ mainmenu }, { where: { id: Number(id) } });
 			let result = await Restaurant.findOne({ where: { id } });
 			res.status(200).send(result).end();
-		} catch {
-			res.status(500).json({ message: "관리자에게 문의하세요" });
+		} catch (err) {
+			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
 	},
@@ -130,8 +130,8 @@ module.exports = {
 				{ where: { id: Number(id) } },
 			);
 			res.status(20).send(result).end();
-		} catch {
-			res.status(500).json({ message: "관리자에게 문의하세요" });
+		} catch (err) {
+			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
 	},
@@ -151,8 +151,8 @@ module.exports = {
 			} else {
 				throw err;
 			}
-		} catch {
-			res.status(500).json({ message: "관리자에게 문의하세요" });
+		} catch (err) {
+			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
 	},
@@ -161,8 +161,8 @@ module.exports = {
 	post: async (req, res) => {
 		try {
 			getPlaceData(req.body, res);
-		} catch {
-			res.status(500).json({ message: "관리자에게 문의하세요" });
+		} catch (err) {
+			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
 	},

@@ -21,7 +21,7 @@ module.exports = {
 		try {
 			const { id } = req.cookies.userInfo;
 			if (id) {
-				console.log("AAAAAA");
+				console.log("AAAAAAA");
 				let result = await Restaurant.findAll({
 					include: [
 						{
@@ -33,7 +33,7 @@ module.exports = {
 					],
 					limit: 4,
 				});
-				console.log("BBBBBB");
+				console.log("BBBBBBB");
 				res.status(201).send(result).end();
 			} else {
 				res.status(404).send("please login first").end();

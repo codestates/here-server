@@ -27,21 +27,25 @@ app.use(
 			"http://localhost",
 			"https://here.soltylink.com/*",
 			"https://here.soltylink.com",
-			"https://soltylink.com/*",
+			"https://soltylink.com/users/logout",
 			"https://soltylink.com",
 		],
-		methods: ["GET", "POST", "PUT", "DELETE"],
+		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 		credentials: true,
+		allowedHeaders: ["Origin, X-Requested With, Content-Type, Accept"],
+		maxAge: 3600,
+		preflightContinue: false,
+		optionsSuccessStatus: 204,
 	}),
 );
-
-app.use(
-	session({
-		secret: process.env.JWT_PUBLIC,
-		resave: false,
-		saveUninitialized: true,
-	}),
-);
+"Access-Control-Allow-Headers",
+	app.use(
+		session({
+			secret: process.env.JWT_PUBLIC,
+			resave: false,
+			saveUninitialized: true,
+		}),
+	);
 
 app.use(logger("dev"));
 app.use(express.json());

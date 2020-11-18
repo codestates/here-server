@@ -77,8 +77,11 @@ module.exports = {
 	// post function
 	logout: (req, res) => {
 		try {
+			console.log("AAAAAA");
 			res.clearCookie("userInfo");
+			console.log("BBBBBB");
 			req.session.destory((err) => console.log(err));
+			console.log("CCCCCC");
 			res.status(201).send("Success").end;
 		} catch (err) {
 			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });

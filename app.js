@@ -20,14 +20,6 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
 // Must use this when it is production
-app.use(function (req, res, next) {
-	var xForwarded = req.get("X-Forwarded-Proto");
-	if (xForwarded !== "https") {
-		res.redirect("https://" + req.get("Host") + req.url);
-	}
-	next();
-});
-
 app.use(
 	cors({
 		origin: [

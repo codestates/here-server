@@ -49,8 +49,9 @@ module.exports = {
 					userInfo.password = null;
 					console.log("AAAAA");
 					res.cookie("userInfo", JSON.stringify(userInfo), {
-						// sameSite: "none",
+						sameSite: "none",
 						domain: "here.soltylink.com",
+						path: "/users/signin",
 						httpOnly: true,
 					});
 					console.log("BBBBB");

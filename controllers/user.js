@@ -80,6 +80,8 @@ module.exports = {
 			console.log("AAAAAA");
 			res.clearCookie("userInfo");
 			console.log("BBBBBB");
+			console.log(" ---- session: ", req.session);
+			console.log(" ---- cookies: ", req.cookies);
 			req.session.destory();
 			console.log("CCCCCC");
 			res.status(201).send("Success").end;

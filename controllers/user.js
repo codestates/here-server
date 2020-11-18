@@ -47,17 +47,8 @@ module.exports = {
 			if (!!userInfo) {
 				if (userInfo.isActive) {
 					userInfo.password = null;
-					if (!req.session.userid) {
-						req.session.userid = userInfo.id;
-					}
-					res.cookie("userInfo", JSON.stringify(userInfo), {
-						domain: "soltylink.com",
-						secure: true,
-						httpOnly: true,
-						path: "/",
-					});
 
-					res.status(200).send(userInfo).end();
+					res.status(201).send(userInfo).end();
 				} else {
 					res.status(409).send("탈퇴한 유저입니다").end();
 				}
@@ -69,16 +60,43 @@ module.exports = {
 				res.status(404);
 				res.end();
 			}
-		} catch {
-			res.status(500).json({ message: "관리자에게 문의하세요" });
+		} catch (err) {
+			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
+			res.end();
+		}
+	},
+	userInfo: async (req, res) => {
+		try {
+			const { id } = req.body;
+			const userInfo = await User.findOne({ where: { id } });
+			if (!!userInfo) {
+				if (!req.session.userid) {
+					req.session.userid = userInfo.id;
+				}
+				res.cookie("userInfo", JSON.stringify(userInfo), {
+					sameSite: "none",
+					domain: "soltylink.com",
+					secure: true,
+					httpOnly: true,
+					path: "/",
+				});
+				res.status(200).end();
+			}
+		} catch (err) {
+			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
 	},
 	// post function
 	logout: (req, res) => {
-		res.clearCookie("userInfo");
-		req.session.destory((err) => console.log(err));
-		res.redirect("../../");
+		try {
+			res.clearCookie("userInfo");
+			req.session.destory((err) => console.log(err));
+			res.status(201).send("Success").end();
+		} catch (err) {
+			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
+			res.end();
+		}
 	},
 	// not use function, post function
 	withdrawal: async (req, res) => {
@@ -115,8 +133,8 @@ module.exports = {
 			// console.log(restInfo);
 			// res.cookie("restInfo", JSON.stringify(restInfo), { sameSite: "none", httpOnly: true });
 			res.status(200).send(restInfo).end();
-		} catch {
-			res.status(500).json({ message: "관리자에게 문의하세요" });
+		} catch (err) {
+			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
 	},
@@ -172,18 +190,17 @@ module.exports = {
 					individualHooks: true,
 					where: { id },
 				});
-				//
+
 				res.clearCookie("userInfo");
 				modifyUserInfo.password = null;
 				res.cookie("userInfo", JSON.stringify(modifyUserInfo), {
-					sameSite: "none",
 					domain: "here.soltylink.com",
 					httpOnly: true,
 				});
 				res.status(200).end();
 			}
-		} catch {
-			res.status(500).json({ message: "관리자에게 문의하세요" });
+		} catch (err) {
+			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
 			res.end();
 		}
 	},

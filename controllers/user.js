@@ -74,7 +74,6 @@ module.exports = {
 					req.session.userid = userInfo.id;
 				}
 				res.cookie("userInfo", JSON.stringify(userInfo), {
-					sameSite: "none",
 					domain: "soltylink.com",
 					secure: true,
 					httpOnly: true,

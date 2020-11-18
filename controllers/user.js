@@ -1,5 +1,5 @@
 const session = require("express-session");
-const { User, Matzip } = require("../models");
+const { User, Matzip, Restaurant } = require("../models");
 const { getLatLng, checkUser } = require("../lib/utils");
 
 module.exports = {
@@ -95,6 +95,11 @@ module.exports = {
 			const id = reqUserInfo.id;
 			const restInfo = await Matzip.findAll({
 				where: { userId: id },
+				include: [
+					{
+						model: Restaurant,
+					},
+				],
 				include: [{ all: true }],
 				orders: [
 					["like", "DESC"],

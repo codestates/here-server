@@ -50,8 +50,7 @@ module.exports = {
 					console.log("AAAAA");
 					res.cookie("userInfo", JSON.stringify(userInfo), {
 						sameSite: "none",
-						domain: "https://here.soltylink.com",
-						path: "/users/signin",
+						secure: true,
 						httpOnly: true,
 					});
 					console.log("BBBBB");

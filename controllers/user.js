@@ -185,31 +185,37 @@ module.exports = {
 		}
 	},
 	_fixData: async (req, res) => {
-		const {
-			id,
-			email,
-			password,
-			location,
-			name,
-			nickname,
-			mobile,
-			imageRef,
-		} = req.body;
-		const userInfo = {
-			id,
-			email,
-			password,
-			location,
-			name,
-			nickname,
-			mobile,
-			imageRef,
-		};
-		if (Object.keys(userInfo).every((key) => userInfo[key])) {
-			await User.update(userInfo, {
-				individualHooks: true,
-				where: { id },
-			});
+		try {
+			const {
+				id,
+				email,
+				password,
+				location,
+				name,
+				nickname,
+				mobile,
+				imageRef,
+			} = req.body;
+			const userInfo = {
+				id,
+				email,
+				password,
+				location,
+				name,
+				nickname,
+				mobile,
+				imageRef,
+			};
+			if (Object.keys(userInfo).every((key) => userInfo[key])) {
+				await User.update(userInfo, {
+					individualHooks: true,
+					where: { id },
+				});
+				res.status(201).send("Good work!").end();
+			}
+		} catch (err) {
+			res.status(500).json({ message: err.message || "관리자에게 문의하세요" });
+			res.end();
 		}
 	},
 };

@@ -119,55 +119,64 @@ module.exports = {
 	// put function
 	fixinfo: async (req, res) => {
 		try {
-			const userid = JSON.parse(req.cookies.userid);
-			const userInfo = await User.findOne({ where: { id: userid } });
+			const {
+				inputEmail,
+				inputPassword,
+				inputLocation,
+				inputName,
+				inputNickname,
+				inputMobile,
+				inputImageRef,
+			} = req.body;
+			if (
+				inputEmail ||
+				inputPassword ||
+				inputLocation ||
+				inputName ||
+				inputNickname ||
+				inputMobile ||
+				inputImageRef
+			) {
+				const userid = JSON.parse(req.cookies.userid);
+				const userInfo = await User.findOne({ where: { id: userid } });
 
-			userInfo.password = req.body.password;
-			if (userInfo) {
-				const {
-					id,
-					email,
-					password,
-					location,
-					name,
-					nickname,
-					mobile,
-					imageRef,
-				} = userInfo;
-				const {
-					inputEmail,
-					inputPassword,
-					inputLocation,
-					inputName,
-					inputNickname,
-					inputMobile,
-					inputImageRef,
-				} = req.body;
-				let newLocation;
-				if (
-					location &&
-					inputLocation &&
-					location.split("@")[0] !== inputLocation
-				) {
-					newLocation = getLocation(inputLocation);
-				} else {
-					newLocation = location || inputLocation || "서울특별시 용산구";
+				userInfo.password = req.body.password;
+				if (userInfo) {
+					const {
+						id,
+						email,
+						password,
+						location,
+						name,
+						nickname,
+						mobile,
+						imageRef,
+					} = userInfo;
+					let newLocation;
+					if (
+						location &&
+						inputLocation &&
+						location.split("@")[0] !== inputLocation
+					) {
+						newLocation = getLocation(inputLocation);
+					} else {
+						newLocation = location || inputLocation || "서울특별시 용산구";
+					}
+					const modifyUserInfo = {
+						email: inputEmail || email,
+						password: inputPassword || password,
+						location: newLocation,
+						name: inputName || name,
+						nickname: inputNickname || nickname,
+						mobile: inputMobile || mobile,
+						imageRef: inputImageRef || imageRef,
+					};
+
+					await User.update(modifyUserInfo, {
+						individualHooks: true,
+						where: { id },
+					});
 				}
-				const modifyUserInfo = {
-					email: inputEmail || email,
-					password: inputPassword || password,
-					location: newLocation,
-					name: inputName || name,
-					nickname: inputNickname || nickname,
-					mobile: inputMobile || mobile,
-					imageRef: inputImageRef || imageRef,
-				};
-
-				await User.update(modifyUserInfo, {
-					individualHooks: true,
-					where: { id },
-				});
-
 				res.status(200).end();
 			}
 		} catch (err) {

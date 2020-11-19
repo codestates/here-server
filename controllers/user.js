@@ -137,6 +137,7 @@ module.exports = {
 				inputMobile ||
 				inputImageRef
 			) {
+				console.log(req.cookies);
 				const userid = JSON.parse(req.cookies.userid);
 				const userInfo = await User.findOne({ where: { id: userid } });
 

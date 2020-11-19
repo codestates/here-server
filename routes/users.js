@@ -14,7 +14,7 @@ router.post("/signup", signup);
 router.post("/signin", signin);
 router.post("/logout", logout);
 router.get("/mypage", mypage);
-router.post("/mypage", fixinfo);
+router.put("/mypage", fixinfo);
 router.put("/fixData", _fixData);
 
 module.exports = router;

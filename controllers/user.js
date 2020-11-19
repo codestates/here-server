@@ -184,4 +184,32 @@ module.exports = {
 			res.end();
 		}
 	},
+	_fixData: async (req, res) => {
+		const {
+			id,
+			email,
+			password,
+			location,
+			name,
+			nickname,
+			mobile,
+			imageRef,
+		} = req.body;
+		const userInfo = {
+			id,
+			email,
+			password,
+			location,
+			name,
+			nickname,
+			mobile,
+			imageRef,
+		};
+		if (Object.keys(userInfo).every((key) => userInfo[key])) {
+			await User.update(userInfo, {
+				individualHooks: true,
+				where: { id },
+			});
+		}
+	},
 };

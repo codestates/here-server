@@ -6,6 +6,7 @@ const {
 	logout,
 	mypage,
 	fixinfo,
+	_fixData,
 } = require("../controllers/user");
 
 /* GET users listing. */
@@ -13,6 +14,7 @@ router.post("/signup", signup);
 router.post("/signin", signin);
 router.post("/logout", logout);
 router.get("/mypage", mypage);
-router.put("/mypage", fixinfo);
+router.post("/mypage", fixinfo);
+router.put("/mypage", _fixData);
 
 module.exports = router;

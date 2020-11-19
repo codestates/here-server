@@ -1,6 +1,6 @@
 const session = require("express-session");
 const { User, Matzip, Restaurant } = require("../models");
-const { getLatLng, checkUser } = require("../lib/utils");
+const { getLatLng, checkUser, getLocation } = require("../lib/utils");
 
 module.exports = {
 	// post function
@@ -144,15 +144,14 @@ module.exports = {
 					inputImageRef,
 				} = req.body;
 				let newLocation;
-				if (location.split("@")[0] !== inputLocation) {
-					const getLocation = async (location) => {
-						const [lat, lng] = await getLatLng(inputLocation);
-						const result = `${location}@${lat},${lng}`;
-						return result;
-					};
+				if (
+					location &&
+					inputLocation &&
+					location.split("@")[0] !== inputLocation
+				) {
 					newLocation = getLocation(inputLocation);
 				} else {
-					newLocation = location;
+					newLocation = location || inputLocation || "서울특별시 용산구";
 				}
 				const modifyUserInfo = {
 					email: inputEmail || email,

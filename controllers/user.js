@@ -141,7 +141,6 @@ module.exports = {
 				const userid = JSON.parse(req.cookies.userid);
 				const userInfo = await User.findOne({ where: { id: userid } });
 
-				userInfo.password = req.body.password;
 				if (userInfo) {
 					const {
 						id,
